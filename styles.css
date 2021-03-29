@@ -71,16 +71,16 @@ body {
     margin:0.5rem 0;
     left:50%;
     transform: translateX(-50%);
-
     transition: all 0.5 ease;
-    
     z-index:-1;
     opacity:0;
+    display:none;
 }
 
 .my-cart--visible {
     z-index:999;
     opacity:1;
+    display:block;
 }
 
 .my-cart-section__header {
@@ -121,13 +121,13 @@ body {
 .cart__item__title {
     font-weight: 400;
     font-size:1rem;
-    text-align: center;
+    margin-left:0.5rem;
 }
 
 .cart__item__price {
     font-weight: 400;
     font-size:1rem;
-    text-align: center;
+    margin-left:0.5rem;
 }
 
 .delete-from-cart-btn {
