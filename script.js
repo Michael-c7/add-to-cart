@@ -1,15 +1,7 @@
-/*TODO
-1. add to cart btn functionality
-- add item to the cart it gets removed
-from the normal view and gets
-moved to the cart / bag
-- update the cart amt
-
-2. delete from cart / bag btn
-- remove the item thats being clicked on from the cart / bag
-- update the cart amt
+/*save the main item eg: w/ add to cart in session storage
 
 */
+
 
 
 
@@ -34,6 +26,8 @@ closeCartBtn.addEventListener("click", function() {
 
 
 
+
+
 shoppingItems.addEventListener("click", event => {
     let item = event.target.closest(".shopping__item");
     let addToCartBtn = event.target.closest(".shopping__item__cart-btn");
@@ -50,6 +44,10 @@ shoppingItems.addEventListener("click", event => {
     /*Update the UI w/ the correct
     number of items in the cart*/
     amtOfItemsInCart();
+
+
+    location.reload();
+    return false;
 })
 
 
@@ -99,8 +97,9 @@ function cartItem() {
             /*append the fragment into the DOM(cart__items)*/
             cartItems.appendChild(fragment)
     }
-
 }
+
+
 
 
 
@@ -124,7 +123,7 @@ cartItems.addEventListener("click", function(event) {
     // delete item in the DOM
     item.remove();
     // delete the item in local storage
-    localStorage.removeItem(itemId)
+    localStorage.removeItem(itemId);
 
     /*Update the UI w/ the correct
     number of items in the cart*/
@@ -133,23 +132,18 @@ cartItems.addEventListener("click", function(event) {
 
 
 function deleteAllCartItems() {
-    localStorage.clear()
-    console.log(localStorage)
-
-    location.reload();
-    return false;
+    if(localStorage.length > 0) {
+        let confirmChat = confirm("Are you sure you want to delete every item in your cart?")
+        if(confirmChat) {
+            localStorage.clear();
+            location.reload();
+            return false;
+        }
+    }
 }
-
-
 deleteAllCartItemsBtn.addEventListener("click", deleteAllCartItems);
 
 
 // run functions here
 amtOfItemsInCart();
 cartItem();
-
-
-
-
-// console.log(localStorage)
-// localStorage.clear()
