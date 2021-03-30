@@ -136,6 +136,25 @@ body {
 }
 
 
+.cart__delete-all-btn {
+    border:none;
+    background:var(--red);
+    color:#fff;
+    width:100%;
+    font-size:1.5rem;
+    letter-spacing: 1px;
+    padding:1rem;
+}
+
+.cart__delete-all-btn:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.cart__delete-all-btn:active {
+    opacity: 1;
+}
+
 
 /*items*/
 .icon-container {

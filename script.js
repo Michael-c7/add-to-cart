@@ -18,7 +18,8 @@ const openCartBtn = document.querySelector(".my-cart-btn");
 const closeCartBtn = document.querySelector(".close-cart-btn");
 const cartSection = document.querySelector(".my-cart-section")
 let shoppingItems = document.querySelector(".shopping__items")
-let cartItems = document.querySelector(".cart__items")
+let cartItems = document.querySelector(".cart__items");
+let deleteAllCartItemsBtn = document.querySelector(".cart__delete-all-btn");
 
 
 /*open / close the cart section*/
@@ -54,8 +55,9 @@ shoppingItems.addEventListener("click", event => {
 
 
 function cartItem() {
-    let fragment = new DocumentFragment();
+    let keysArr = Object.keys(localStorage);
     let valuesArr = Object.values(localStorage);
+    let fragment = new DocumentFragment();
 
     // each item as an object
     for(let i = 0; i < valuesArr.length; i++) {
@@ -80,9 +82,10 @@ function cartItem() {
             h3.classList.add("cart__item__price");
             button.classList.add("close-cart-btn", "delete-from-cart-btn");
             iconElement.classList.add("fa", "fa-times");
-            /*attributes in the fragment*/
+            /*attributes * id in the fragment*/
             img.setAttribute("src", imgItem);
             iconElement.setAttribute("aria-hidden", "false");
+            li.id = keysArr[i];
             /*text added to the fragment*/
             h2.textContent = itemTitle;
             h3.textContent = itemCost;
@@ -96,6 +99,7 @@ function cartItem() {
             /*append the fragment into the DOM(cart__items)*/
             cartItems.appendChild(fragment)
     }
+
 }
 
 
@@ -110,11 +114,42 @@ function amtOfItemsInCart() {
 }
 
 
-// run function here
-amtOfItemsInCart();
 
+// delete cart item
+cartItems.addEventListener("click", function(event) {
+    // delete cart item
+    let closeBtn = event.target.closest(".close-cart-btn");
+    let item = closeBtn.parentElement;
+    let itemId = item.id;
+    // delete item in the DOM
+    item.remove();
+    // delete the item in local storage
+    localStorage.removeItem(itemId)
+
+    /*Update the UI w/ the correct
+    number of items in the cart*/
+    amtOfItemsInCart();
+});
+
+
+function deleteAllCartItems() {
+    localStorage.clear()
+    console.log(localStorage)
+
+    location.reload();
+    return false;
+}
+
+
+deleteAllCartItemsBtn.addEventListener("click", deleteAllCartItems);
+
+
+// run functions here
+amtOfItemsInCart();
 cartItem();
 
 
 
-console.log(localStorage)
+
+// console.log(localStorage)
+// localStorage.clear()
