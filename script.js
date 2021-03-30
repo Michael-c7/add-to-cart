@@ -1,5 +1,5 @@
-/*save the main item eg: w/ add to cart in session storage
-
+/* TODO
+save the main item eg: w/ add to cart in session storage
 */
 
 
