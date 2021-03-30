@@ -81,32 +81,40 @@ createShoppingCartItems()
 function giveShoppingCartItemId() {
     let shoppingItemsAll = Array.from(shoppingItems.children);
     let titles = [];
-    let ids = [];
-        // give each shopping cart item an id
-        shoppingItemsAll.forEach(element => {
-            let elementTitle = element.children[1].textContent.toLowerCase();
-            
-            /*Id should be in camelCase in order
-            to match the session object names*/
-           
-            
 
 
-            // console.log(elementTitleSplit)
+    /*
+    Save all the id's
+    session keys for the shopping item)
+    into session storage
+      sessionStorage.setItem("shoppingCartIds", JSON.stringify(ids));
+    */
 
+    let shoppingItemsTitles = shoppingItemsAll.map((element) => {
+        let elementTitle = element.children[1].textContent.toLowerCase();
+        return elementTitle;
+    });
 
+    let shoppingItemsTitlesCamelCase = shoppingItemsTitles.map(item => {
+        let words = item.split(" ");
 
-            // replace all space w/ - (minus sign)
-            // let sessionElementKey = elementTitle.replace(/\s/gi, "-");
-            // element.id  = sessionElementKey;
-            // ids.push(sessionElementKey);
+        let wordsCapitalized = words.map((word) => {
+                let firstLetter = word[0].toUpperCase();
+                let restOfString = word.slice(1);
+                let entireWord = firstLetter + restOfString;
+                return entireWord;
         });
 
-        /*Save all the id's
-        session keys for the shopping item)
-        into session storage*/
-        // sessionStorage.setItem("shoppingCartIds", JSON.stringify(ids));
+       return wordsCapitalized.join("");
+    });
+
+    /*Set the camelCased titles
+    as an id for the
+    individual shopping items*/
+    for(let i = 0; i < shoppingItemsAll.length; i++) {
+        shoppingItemsAll[i].id = shoppingItemsTitlesCamelCase[i];
     }
+}
 
 
 
