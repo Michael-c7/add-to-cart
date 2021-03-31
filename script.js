@@ -138,17 +138,6 @@ shoppingItems.addEventListener("click", event => {
 
     /*remove the item from session storage*/
     let shoppingItemsIds = JSON.parse(sessionStorage["shoppingCartData"]);
-    // console.log(shoppingItemsIds)
-
-    /*remove the shopping item
-    that was clicked on
-    from session storage*/
-    /*
-    1. on the click the of the add cart button
-    get that elements id and if it matches
-    the session object(sleepingDogs) then delete it and return the
-    session object w/out it.
-    */
 
     let itemId = addToCartBtn.parentElement.id;
    for(let item in shoppingItemsIds) {
@@ -160,16 +149,16 @@ shoppingItems.addEventListener("click", event => {
    // change the session storage now
    sessionStorage.clear();
    // new obj
-   sessionStorage.setItem("shoppingCartData",JSON.stringify(shoppingItemsIds));
-
+   sessionStorage.setItem("shoppingCartData", JSON.stringify(shoppingItemsIds));
+   createShoppingCartItems()
 
     /*Update the UI w/ the correct
     number of items in the cart*/
     amtOfItemsInCart();
 
     // reload the page
-    // location.reload();
-    // return false;
+    location.reload();
+    return false;
 })
 
 
@@ -272,3 +261,6 @@ deleteAllCartItemsBtn.addEventListener("click", deleteAllCartItems);
 amtOfItemsInCart();
 cartItem();
 giveShoppingCartItemId();
+
+
+console.log(sessionStorage)
