@@ -134,27 +134,11 @@ shoppingItems.addEventListener("click", event => {
 
     let uniqueID = new Date().getTime();
     localStorage.setItem(uniqueID, JSON.stringify({itemImg, itemTitle, itemCost}));
-    // item.remove();
-
-    // whatever
-    // shoppingItem(uniqueID, addToCartBtn)
-
+    item.remove();
 
     /*remove the item from session storage*/
     let shoppingItemsIds = JSON.parse(sessionStorage["shoppingCartData"]);
-    // let rest;
-    // shoppingItemsIds.forEach((item) => {
-    //     let currentTitleId = addToCartBtn.parentElement.id;
-    //     if(currentTitleId === item) {
-    //         let titleIndex = shoppingItemsIds.indexOf(currentTitleId);
-    //         rest = shoppingItemsIds.splice(titleIndex, titleIndex + 1);
-    //     }
-    //     // stuff here
-    //     sessionStorage.clear();
-    //     sessionStorage.setItem("shoppingItemsIds", JSON.stringify(shoppingItemsIds))
-    //     console.log(sessionStorage)
-    // })
-    console.log(shoppingItemsIds)
+    // console.log(shoppingItemsIds)
 
     /*remove the shopping item
     that was clicked on
@@ -166,9 +150,17 @@ shoppingItems.addEventListener("click", event => {
     session object w/out it.
     */
 
-
-    
-
+    let itemId = addToCartBtn.parentElement.id;
+   for(let item in shoppingItemsIds) {
+       if(item === itemId) {
+           // remove the item from shoppingItemsIds
+           delete shoppingItemsIds[`${item}`];
+       }
+   }
+   // change the session storage now
+   sessionStorage.clear();
+   // new obj
+   sessionStorage.setItem("shoppingCartData",JSON.stringify(shoppingItemsIds));
 
 
     /*Update the UI w/ the correct
