@@ -95,17 +95,20 @@ function giveShoppingCartItemId() {
         return elementTitle;
     });
 
-    let shoppingItemsTitlesCamelCase = shoppingItemsTitles.map(item => {
+    let shoppingItemsTitlesCamelCase = shoppingItemsTitles.map((item, index) => {
+        /*this code is only built to handle titles w/ 2 words*/
         let words = item.split(" ");
 
-        let wordsCapitalized = words.map((word) => {
-                let firstLetter = word[0].toUpperCase();
-                let restOfString = word.slice(1);
-                let entireWord = firstLetter + restOfString;
-                return entireWord;
-        });
+        let firstWord = words[0];
 
-       return wordsCapitalized.join("");
+        let secondWord = words[1];
+        let secondWordFirstLetter = secondWord[0].toUpperCase();
+        let secondWordRestOfString = secondWord.slice(1);
+        let entireSecondWord = secondWordFirstLetter + secondWordRestOfString;
+
+        let firstAndSecondWord = firstWord + entireSecondWord;
+
+        return firstAndSecondWord;
     });
 
     /*Set the camelCased titles
@@ -156,6 +159,14 @@ shoppingItems.addEventListener("click", event => {
     /*remove the shopping item
     that was clicked on
     from session storage*/
+    /*
+    1. on the click the of the add cart button
+    get that elements id and if it matches
+    the session object(sleepingDogs) then delete it and return the
+    session object w/out it.
+    */
+
+
     
 
 
