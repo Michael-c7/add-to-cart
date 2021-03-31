@@ -80,15 +80,6 @@ createShoppingCartItems()
 /*loop though each shopping cart item and give it an id*/
 function giveShoppingCartItemId() {
     let shoppingItemsAll = Array.from(shoppingItems.children);
-    let titles = [];
-
-
-    /*
-    Save all the id's
-    session keys for the shopping item)
-    into session storage
-      sessionStorage.setItem("shoppingCartIds", JSON.stringify(ids));
-    */
 
     let shoppingItemsTitles = shoppingItemsAll.map((element) => {
         let elementTitle = element.children[1].textContent.toLowerCase();
@@ -150,7 +141,7 @@ shoppingItems.addEventListener("click", event => {
    sessionStorage.clear();
    // new obj
    sessionStorage.setItem("shoppingCartData", JSON.stringify(shoppingItemsIds));
-   createShoppingCartItems()
+   createShoppingCartItems();
 
     /*Update the UI w/ the correct
     number of items in the cart*/
@@ -164,7 +155,7 @@ shoppingItems.addEventListener("click", event => {
 
 
 
-/* */
+
 function cartItem() {
     let keysArr = Object.keys(localStorage);
     let valuesArr = Object.values(localStorage);
