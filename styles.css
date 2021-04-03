@@ -108,14 +108,11 @@ body {
 
 
 .cart__item {
-    padding:1rem;
-}
-
-.cart__item {
     display:grid;
     grid-template-columns: 1fr 0.5fr 0.5fr 1rem;
     justify-content: center;
     align-items:center;
+    padding:1rem;
 }
 
 .cart__item__title {
@@ -193,8 +190,6 @@ body {
     font-weight: 400;
     margin:1rem 0 0.25rem 0;
 }
-
-
 
 .shopping__item__cart-btn {
     border:none;

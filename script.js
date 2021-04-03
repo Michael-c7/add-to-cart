@@ -26,48 +26,68 @@ closeCartBtn.addEventListener("click", function() {
 
 function createShoppingCartItems() {
     let shoppingCartData = {
-        sleepingDogs:["https://cdn.cloudflare.steamstatic.com/steam/apps/307690/header.jpg?t=1602800785", "Sleeping Dogs", "2.99"],
-        fallout4:["https://cdn.cloudflare.steamstatic.com/steam/apps/377160/header.jpg?t=1588615523", "Fallout 4", "19.99"],
-        metroExodus:["https://cdn.cloudflare.steamstatic.com/steam/apps/412020/header.jpg?t=1614093928", "Metro Exodus", "39.99"],
-        doomEternal:["https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg?t=1616080865", "DOOM Eternal", "29.99"],
+        sleepingDogs:["https://cdn.cloudflare.steamstatic.com/steam/apps/307690/header.jpg?t=1602800785" || "./images/sleeping-dogs-img.jpg", "Sleeping Dogs", "2.99"],
+        fallout4:["https://cdn.cloudflare.steamstatic.com/steam/apps/377160/header.jpg?t=1588615523" || "./images/fallout-4-img.jpg", "Fallout 4", "19.99"],
+        metroExodus:["https://cdn.cloudflare.steamstatic.com/steam/apps/412020/header.jpg?t=1614093928" || "./images/metro-exodus.jpg", "Metro Exodus", "39.99"],
+        doomEternal:["https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg?t=1616080865" || "./images/doom-eternal.jpg", "DOOM Eternal", "29.99"],
     }
     // sessionStorage.setItem("shoppingCartData", JSON.stringify(shoppingCartData));
 
     let arrValues = Object.values(shoppingCartData);
     let fragment = new DocumentFragment();
 
-    /*WHERE PART 2 GOES */
+    /*WHERE PART 2 GOES
+    item(argument) in the forEach loop is equivalent to arrValues[i]
+     */
+    let iterateBy;
 
-    arrValues.forEach((item) => {
-        let itemImg = item[0];
+    if(sessionStorage["shoppingData"]) {
+        iterateBy = JSON.parse(sessionStorage.getItem("shoppingData"));
+    } else {
+        iterateBy = arrValues;
+    }
+
+    /* go through each arr
+    and get the first of each value(img)*/
+    console.log(arrValues[0][0])
+
+    let imgs = [];
+    for(let i = 0; i < arrValues.length; i++) {
+        imgs.push(arrValues[i][0])
+    }
+
+
+    iterateBy.forEach((item, index) => {
+        let itemImg = item[0] || imgs[index];
         let itemTitle = item[1];
         let itemCost = item[2];
-        /* parts of the fragment*/
+
+        // parts of the fragment
         let li = document.createElement("li");
         let img = document.createElement("img");
         let h2 = document.createElement("h2");
         let h3 = document.createElement("h3");
-        let button = document.createElement("button")
-        /*classes in the fragment*/
+        let button = document.createElement("button");
+        // classes in the fragment
         li.classList.add("shopping__item");
         img.classList.add("shopping__item__image");
         h2.classList.add("shopping__item__title");
         h3.classList.add("shopping__item__price");
+        // attributes in the fragment
         button.classList.add("shopping__item__cart-btn");
-        /*attributes in the fragment*/
         img.setAttribute("src", `${itemImg}`);
         img.setAttribute("alt", "the games cover image");
-        /*text in the fragment*/
-        h2.textContent = `${itemTitle}`;
-        h3.textContent = `$${itemCost}`;
+        // text in the fragment
+        h2.textContent = `${itemTitle || item.itemTitle}`;
+        h3.textContent = `$${itemCost || item.itemCost}`;
         button.textContent = "Add to cart";
-        /*appending the elements together*/
+        //  appending the elements together
         li.appendChild(img);
         li.appendChild(h2);
         li.appendChild(h3);
         li.appendChild(button);
         fragment.appendChild(li);
-        /*append the fragment into the DOM(shopping__items)*/
+        // append the fragment into the DOM(shopping__items)
         shoppingItems.appendChild(fragment);
     });
 }
@@ -111,26 +131,25 @@ function giveShoppingCartItemId() {
 
 /*delete shopping item*/
 function deleteShoppingItem() {
-    /* must be in this array format
-    to work like todo app solution*/
-    let x = [{name:"bob", age:23}, {name:"bill", age:44}]
-    // console.log(x)
-    let data = []
+    let dollarSignRegex = /\$+/gi;
+    let data = [];
 
     let currentItem = event.target.parentElement;
     /*remove current shopping item from the DOM*/
-    currentItem.remove();
+    // currentItem.remove();
 
     /*comment here*/
     let shoppingItemChildren = shoppingItems.children;
     for(let i = 0; i < shoppingItemChildren.length; i++) {
-        let img = shoppingItemChildren[i].children[0];
-        let title = shoppingItemChildren[i].children[1].textContent;
+
+        let itemImg = shoppingItemChildren[i].children[0];
+        let itemTitle = shoppingItemChildren[i].children[1].textContent;
         /*has dollar sign on the text*/
-        let price = shoppingItemChildren[i].children[2].textContent;
-        data.push({img, title, price})
+        let itemCostText = shoppingItemChildren[i].children[2].textContent;
+        let itemCost = itemCostText.replaceAll(dollarSignRegex, "");
+        data.push({itemImg, itemTitle, itemCost})
     }
-    sessionStorage.setItem("shoppingData",JSON.stringify(data));
+    sessionStorage.setItem("shoppingData", JSON.stringify(data));
 }
 
 
@@ -142,19 +161,18 @@ shoppingItems.addEventListener("click", event => {
     let itemTitle = addToCartBtn.parentElement.children[1].textContent;
     let itemCost = addToCartBtn.parentElement.children[2].textContent;
     let uniqueID = new Date().getTime();
-
     localStorage.setItem(uniqueID, JSON.stringify({itemImg, itemTitle, itemCost}));
 
     /*do session storage stuff w/ shopping item here*/
-    deleteShoppingItem()
+    deleteShoppingItem();
 
     /*Update the UI w/ the correct
     number of items in the cart*/
     amtOfItemsInCart();
 
     // reload the page
-        // location.reload();
-        // return false;
+        location.reload();
+        return false;
 })
 
 
@@ -260,8 +278,3 @@ deleteAllCartItemsBtn.addEventListener("click", deleteAllCartItems);
 amtOfItemsInCart();
 cartItem();
 giveShoppingCartItemId();
-
-
-console.log(sessionStorage)
-
-// sessionStorage.clear()
