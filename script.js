@@ -4,9 +4,6 @@ https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
 */
 
 
-
-
-
 const openCartBtn = document.querySelector(".my-cart-btn");
 const closeCartBtn = document.querySelector(".close-cart-btn");
 const cartSection = document.querySelector(".my-cart-section");
@@ -34,11 +31,12 @@ function createShoppingCartItems() {
         metroExodus:["https://cdn.cloudflare.steamstatic.com/steam/apps/412020/header.jpg?t=1614093928", "Metro Exodus", "39.99"],
         doomEternal:["https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg?t=1616080865", "DOOM Eternal", "29.99"],
     }
-    sessionStorage.setItem("shoppingCartData", JSON.stringify(shoppingCartData));
-    // console.log(sessionStorage)
+    // sessionStorage.setItem("shoppingCartData", JSON.stringify(shoppingCartData));
 
     let arrValues = Object.values(shoppingCartData);
     let fragment = new DocumentFragment();
+
+    /*WHERE PART 2 GOES */
 
     arrValues.forEach((item) => {
         let itemImg = item[0];
@@ -111,51 +109,58 @@ function giveShoppingCartItemId() {
 }
 
 
+/*delete shopping item*/
+function deleteShoppingItem() {
+    /* must be in this array format
+    to work like todo app solution*/
+    let x = [{name:"bob", age:23}, {name:"bill", age:44}]
+    // console.log(x)
+    let data = []
 
+    let currentItem = event.target.parentElement;
+    /*remove current shopping item from the DOM*/
+    currentItem.remove();
+
+    /*comment here*/
+    let shoppingItemChildren = shoppingItems.children;
+    for(let i = 0; i < shoppingItemChildren.length; i++) {
+        let img = shoppingItemChildren[i].children[0];
+        let title = shoppingItemChildren[i].children[1].textContent;
+        /*has dollar sign on the text*/
+        let price = shoppingItemChildren[i].children[2].textContent;
+        data.push({img, title, price})
+    }
+    sessionStorage.setItem("shoppingData",JSON.stringify(data));
+}
 
 
 
 shoppingItems.addEventListener("click", event => {
     let item = event.target.closest(".shopping__item");
     let addToCartBtn = event.target.closest(".shopping__item__cart-btn");
-
     let itemImg = addToCartBtn.parentElement.children[0].src;
     let itemTitle = addToCartBtn.parentElement.children[1].textContent;
     let itemCost = addToCartBtn.parentElement.children[2].textContent;
-
     let uniqueID = new Date().getTime();
+
     localStorage.setItem(uniqueID, JSON.stringify({itemImg, itemTitle, itemCost}));
-    item.remove();
 
-    /*remove the item from session storage*/
-    let shoppingItemsIds = JSON.parse(sessionStorage["shoppingCartData"]);
-
-    let itemId = addToCartBtn.parentElement.id;
-   for(let item in shoppingItemsIds) {
-       if(item === itemId) {
-           // remove the item from shoppingItemsIds
-           delete shoppingItemsIds[`${item}`];
-       }
-   }
-   // change the session storage now
-   sessionStorage.clear();
-   // new obj
-   sessionStorage.setItem("shoppingCartData", JSON.stringify(shoppingItemsIds));
-   createShoppingCartItems();
+    /*do session storage stuff w/ shopping item here*/
+    deleteShoppingItem()
 
     /*Update the UI w/ the correct
     number of items in the cart*/
     amtOfItemsInCart();
 
     // reload the page
-    location.reload();
-    return false;
+        // location.reload();
+        // return false;
 })
 
 
 
 
-
+/*create the html / data that goes into the cart*/
 function cartItem() {
     let keysArr = Object.keys(localStorage);
     let valuesArr = Object.values(localStorage);
@@ -206,7 +211,7 @@ function cartItem() {
 
 
 
-
+/*display's how many item are currently in the cart*/
 function amtOfItemsInCart() {
     let itemAmtNav = document.querySelector(".shopping__navbar__amt");
     let itemAmtCart = document.querySelector(".my-cart-heading");
@@ -218,7 +223,7 @@ function amtOfItemsInCart() {
 
 
 
-// delete cart item
+// delete an item from the cart
 cartItems.addEventListener("click", function(event) {
     // delete cart item
     let closeBtn = event.target.closest(".close-cart-btn");
@@ -234,7 +239,7 @@ cartItems.addEventListener("click", function(event) {
     amtOfItemsInCart();
 });
 
-
+/*delete all the cart items*/
 function deleteAllCartItems() {
     if(localStorage.length > 0) {
         let confirmChat = confirm("Are you sure you want to delete every item in your cart?")
@@ -245,7 +250,10 @@ function deleteAllCartItems() {
         }
     }
 }
+
 deleteAllCartItemsBtn.addEventListener("click", deleteAllCartItems);
+
+
 
 
 // run functions here
@@ -255,3 +263,5 @@ giveShoppingCartItemId();
 
 
 console.log(sessionStorage)
+
+// sessionStorage.clear()
